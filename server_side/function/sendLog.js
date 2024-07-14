@@ -3,10 +3,9 @@ const fs = require("fs");
 const filePath = "./data.json";
 let previousDuration = null;
 let falseCounter = 0;
-const THRESHOLD = 10; // Number of consecutive false readings before setting isPlaying to false
-const CHECK_INTERVAL = 5000; // Check every 5 seconds
-
-let lastCheckedTime = Date.now();
+const THRESHOLD = 3; // Number of consecutive false readings before setting isPlaying to false
+const bufferSize = 5; // Size of the buffer for tracking playback states
+let playbackBuffer = []; // Buffer to track last states
 
 async function sendLog() {
   try {
@@ -28,30 +27,26 @@ async function sendLog() {
     // Log current and previous durations for debugging
     console.log(`Current Progress: ${currentProgress}, Previous Progress: ${previousDuration}, Is Playing: ${isPlaying}`);
 
-    if (isPlaying) {
-      falseCounter = 0; // Reset counter if playing
-    } else {
-      falseCounter += 1; // Increment false counter
+    // Update playback buffer
+    playbackBuffer.push(isPlaying);
+    if (playbackBuffer.length > bufferSize) {
+      playbackBuffer.shift(); // Maintain buffer size
     }
 
     previousDuration = currentProgress;
 
-    // Check if enough time has passed since last update
-    if (Date.now() - lastCheckedTime > CHECK_INTERVAL) {
-      if (falseCounter >= THRESHOLD) {
-        if (dataJson.isPlaying !== false) {
-          dataJson.isPlaying = false;
-          fs.writeFileSync(filePath, JSON.stringify(dataJson, null, 2));
-          console.log("Data updated in data.json to false");
-        }
-      } else if (isPlaying) {
-        if (dataJson.isPlaying !== true) {
-          dataJson.isPlaying = true;
-          fs.writeFileSync(filePath, JSON.stringify(dataJson, null, 2));
-          console.log("Data updated in data.json to true");
-        }
-      }
-      lastCheckedTime = Date.now(); // Update last checked time
+    // Count consecutive false readings
+    falseCounter = playbackBuffer.filter(state => !state).length;
+
+    // Update the JSON based on the false counter
+    if (falseCounter >= THRESHOLD) {
+      dataJson.isPlaying = false;
+      fs.writeFileSync(filePath, JSON.stringify(dataJson, null, 2));
+      console.log("Data updated in data.json to false");
+    } else if (isPlaying) {
+      dataJson.isPlaying = true;
+      fs.writeFileSync(filePath, JSON.stringify(dataJson, null, 2));
+      console.log("Data updated in data.json to true");
     }
 
     return JSON.stringify(dataJson, null, 2);
