@@ -10,6 +10,19 @@ plays on puppeteer for real-time playback data and uses websocket as a real-time
 - [Real Time Web](https://playnow.tierkun.my.id/)
 
 <div align="center">
+  <h3>🎶 Vibing to (Spotify)</h3>
+  <div>
+    &nbsp;&nbsp;&nbsp;&nbsp;<a href="https://spotifynow.tierkun.my.id/" target="_blank">
+      <img src="https://img.shields.io/badge/Spotify-1ED760?style=for-the-badge&logo=spotify&logoColor=white" alt="Spotify">
+    </a>
+  </div>
+  <br>
+ <a href="https://spotifynow.tierkun.my.id/" target="_blank">
+    <img src="https://spotify-new-read-me.vercel.app/api/spotify?background_color=0d1117&border_color=ffffff" alt="Spotify">
+  </a>
+</div>
+
+<div align="center">
   <h3>🎶 Vibing to (YT Music)</h3>
   <div>
     &nbsp;&nbsp;&nbsp;&nbsp;<a href="https://playnow.tierkun.my.id/" target="_blank">
