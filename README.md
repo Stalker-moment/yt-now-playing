@@ -18,7 +18,7 @@ play over puppeteer for real time playback data
 </div>
 
 ## Front Side 
-front end by [Azaly](https://github.com/MRAzaly20/)
+Front End by [Azaly](https://github.com/MRAzaly20/)
 
 - For Readme : [Here](https://github.com/MRAzaly20/Flask-YT-Playing)
 - For Real Time Web : [Here](belum)
