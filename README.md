@@ -1,6 +1,6 @@
 # yt-now-playing
 Project for real time monitoring now playing for yt music, can be used for readme
-play over puppeteer for real time playback data
+plays on puppeteer for real-time playback data and uses websocket as a real-time data delivery protocol
 
 ## Using :
 ![Express.js](https://img.shields.io/badge/express.js-%23404d59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB) ![NPM](https://img.shields.io/badge/NPM-%23CB3837.svg?style=for-the-badge&logo=npm&logoColor=white) ![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)	![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
