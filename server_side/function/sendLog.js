@@ -29,8 +29,8 @@ async function sendLog() {
 
     previousDuration = currentProgress;
 
-    // Only write false to JSON if falseCounter reaches 3
-    if (falseCounter >= 3) {
+    // Only write false to JSON if falseCounter reaches 10
+    if (falseCounter >= 10) {
       dataJson.isPlaying = false;
       fs.writeFileSync(filePath, JSON.stringify(dataJson, null, 2));
       console.log("Data updated in data.json to false");
