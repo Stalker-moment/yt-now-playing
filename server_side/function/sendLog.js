@@ -8,8 +8,13 @@ const THRESHOLD = 10; // Number of consecutive false readings before setting isP
 // Initialize the counter from the file or set it to 0
 let falseCounter = 0;
 if (fs.existsSync(counterFilePath)) {
-  const counterData = fs.readFileSync(counterFilePath, "utf8");
-  falseCounter = JSON.parse(counterData).falseCounter || 0;
+  try {
+    const counterData = fs.readFileSync(counterFilePath, "utf8");
+    falseCounter = JSON.parse(counterData).falseCounter || 0;
+  } catch (error) {
+    console.error("Error reading counter file:", error.message);
+    falseCounter = 0; // Reset if there's an error
+  }
 }
 
 async function sendLog() {
