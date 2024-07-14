@@ -69,7 +69,8 @@ wss.on("connection", (ws, req) => {
   if (req.url === "/spotify") {
     const intervalId = setInterval(async () => {
       const data = await getNowPlaying();
-      ws.send(data);
+
+      ws.send(JSON.stringify(data));
     }, 1000);
 
     ws.on("close", () => {
