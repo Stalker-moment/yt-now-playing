@@ -19,7 +19,7 @@ app.get("/", (req, res) => {
   res.send("halo");
 });
 
-let isPlayingSpotify = false;
+var isPlayingSpotify = false;
 
 // Cronjob to check Spotify status every second
 cronjob.schedule("*/1 * * * * *", async () => {
