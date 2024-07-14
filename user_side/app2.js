@@ -37,7 +37,7 @@ const connectWebSocket = () => {
     "C:\\Program Files\\BraveSoftware\\Brave-Browser\\Application\\brave.exe";
   const userDataDir =
     "C:\\Users\\Acer\\AppData\\Local\\BraveSoftware\\Brave-Browser\\User Data\\";
-  const checkInterval = 1300;
+  const checkInterval = 1000;
 
   connectWebSocket(); // Connect to WebSocket
 
