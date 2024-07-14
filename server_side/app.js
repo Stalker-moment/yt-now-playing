@@ -21,7 +21,7 @@ app.get("/", (req, res) => {
 
 //cronjob every 1 second
 cronjob.schedule("*/1 * * * * *", async () => {
-  const data = await getNowPlaying();
+  var dataNowSpotify = await getNowPlaying();
 });
 
 // Create HTTP server
@@ -77,7 +77,19 @@ wss.on("connection", (ws, req) => {
     const intervalId = setInterval(async () => {
       const data = await sendLogSpotify();
 
-      ws.send(JSON.stringify(data));
+      const datanya = JSON.parse(data);
+      const dataedit = {
+        isPlaying: dataNowSpotify.is_playing,
+        title: datanya.title,
+        artist: datanya.artist,
+        album: datanya.album,
+        songThumbnail: datanya.songThumbnail,
+        songUrl: datanya.songUrl,
+        duration: datanya.duration,
+        progress: datanya.progress,
+      };
+
+      ws.send(JSON.stringify(dataedit, null, 2));
     }, 1000);
 
     ws.on("close", () => {
