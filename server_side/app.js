@@ -21,9 +21,9 @@ app.get("/", (req, res) => {
 
 let isPlayingSpotify = false;
 
-//cronjob every 1 second
+// Cronjob to check Spotify status every second
 cronjob.schedule("*/1 * * * * *", async () => {
-  var dataNowSpotify = await getNowPlaying();
+  const dataNowSpotify = await getNowPlaying();
   isPlayingSpotify = dataNowSpotify.is_playing;
 });
 
@@ -46,7 +46,6 @@ wss.on("connection", (ws, req) => {
       let data;
       try {
         data = JSON.parse(message);
-
         // Save new data to JSON file (overwriting old data)
         fs.writeFile("data.json", JSON.stringify(data, null, 2), (err) => {
           if (err) {
@@ -75,11 +74,10 @@ wss.on("connection", (ws, req) => {
     });
   }
 
-  // Handle /receive connection
+  // Handle /spotify connection
   if (req.url === "/spotify") {
     const intervalId = setInterval(async () => {
       const data = await sendLogSpotify();
-
       const datanya = JSON.parse(data);
       const dataedit = {
         isPlaying: isPlayingSpotify,
