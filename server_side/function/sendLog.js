@@ -18,8 +18,8 @@ async function sendLog() {
     // combine minutes and seconds to a single value for comparison
     let currentProgress = progressMinutes * 60 + progressSeconds;
 
+    // Check if the duration is the same as the previous duration
     const isPlaying = currentProgress !== previousDuration;
-    previousDuration = currentProgress;
 
     if (!isPlaying) {
       falseCounter += 1;
@@ -27,11 +27,18 @@ async function sendLog() {
       falseCounter = 0;
     }
 
+    previousDuration = currentProgress;
+
     // Only write false to JSON if falseCounter reaches 3
     if (falseCounter >= 3) {
       dataJson.isPlaying = false;
       fs.writeFileSync(filePath, JSON.stringify(dataJson, null, 2));
       console.log("Data updated in data.json to false");
+    } else if (isPlaying) {
+      // Update the JSON with the current state if it is playing
+      dataJson.isPlaying = true;
+      fs.writeFileSync(filePath, JSON.stringify(dataJson, null, 2));
+      console.log("Data updated in data.json to true");
     }
 
     return JSON.stringify(dataJson, null, 2);
