@@ -22,12 +22,16 @@ async function sendLog() {
     // Determine if playback is ongoing
     const isPlaying = currentProgress !== previousDuration;
 
-    // If playback is not ongoing, increment false counter
+    // Log current and previous durations for debugging
+    console.log(
+      `Current Progress: ${currentProgress}, Previous Progress: ${previousDuration}, Is Playing: ${isPlaying}`
+    );
+
+    // Update false counter based on isPlaying state
     if (!isPlaying) {
       falseCounter += 1;
     } else {
-      // If playback is ongoing, reset false counter
-      falseCounter = 0;
+      falseCounter = 0; // Reset counter if playback is detected
     }
 
     previousDuration = currentProgress;
@@ -39,11 +43,13 @@ async function sendLog() {
         fs.writeFileSync(filePath, JSON.stringify(dataJson, null, 2));
         console.log("Data updated in data.json to false");
       }
-    } else if (isPlaying && dataJson.isPlaying !== true) {
+    } else if (isPlaying) {
       // Update the JSON with the current state if it is playing
-      dataJson.isPlaying = true;
-      fs.writeFileSync(filePath, JSON.stringify(dataJson, null, 2));
-      console.log("Data updated in data.json to true");
+      if (dataJson.isPlaying !== true) {
+        dataJson.isPlaying = true;
+        fs.writeFileSync(filePath, JSON.stringify(dataJson, null, 2));
+        console.log("Data updated in data.json to true");
+      }
     }
 
     return JSON.stringify(dataJson, null, 2);
