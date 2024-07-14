@@ -19,9 +19,12 @@ app.get("/", (req, res) => {
   res.send("halo");
 });
 
+let isPlayingSpotify = false;
+
 //cronjob every 1 second
 cronjob.schedule("*/1 * * * * *", async () => {
   var dataNowSpotify = await getNowPlaying();
+  isPlayingSpotify = dataNowSpotify.is_playing;
 });
 
 // Create HTTP server
@@ -79,7 +82,7 @@ wss.on("connection", (ws, req) => {
 
       const datanya = JSON.parse(data);
       const dataedit = {
-        isPlaying: dataNowSpotify.is_playing,
+        isPlaying: isPlayingSpotify,
         title: datanya.title,
         artist: datanya.artist,
         album: datanya.album,
