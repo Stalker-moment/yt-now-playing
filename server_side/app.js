@@ -24,7 +24,7 @@ var isPlayingSpotify = false;
 // Cronjob to check Spotify status every second
 cronjob.schedule("*/1 * * * * *", async () => {
   const dataNowSpotify = await getNowPlaying();
-  isPlayingSpotify = dataNowSpotify.is_playing;
+  isPlayingSpotify = dataNowSpotify.isPlaying;
 });
 
 // Create HTTP server
