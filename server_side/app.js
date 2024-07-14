@@ -90,7 +90,7 @@ wss.on("connection", (ws, req) => {
         progress: datanya.progress,
       };
 
-      console.log("Data sent to client:", dataedit);
+      //console.log("Data sent to client:", dataedit);
 
       ws.send(JSON.stringify(dataedit, null, 2));
     }, 1000);
