@@ -6,15 +6,20 @@ play over puppeteer for real time playback data
 ![Express.js](https://img.shields.io/badge/express.js-%23404d59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB) ![NPM](https://img.shields.io/badge/NPM-%23CB3837.svg?style=for-the-badge&logo=npm&logoColor=white) ![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)	![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
 
 ## Demo :
-- [Demo Url](https://ytnow.tierkun.my.id/api/ytmusic?background_color=0d1117&border_color=ffffff)
+- [Readme](https://ytnow.tierkun.my.id/api/ytmusic)
+- [Real Time Web](https://playnow.tierkun.my.id/)
 
 <div align="center">
   <h3>🎶 Vibing to (YT Music)</h3>
   <div>
-    &nbsp;&nbsp;&nbsp;&nbsp;<img src="https://img.shields.io/badge/YouTube_Music-FF0000?style=for-the-badge&logo=youtube-music&logoColor=white" alt="YouTube Music">
+    &nbsp;&nbsp;&nbsp;&nbsp;<a href="https://playnow.tierkun.my.id/" target="_blank">
+      <img src="https://img.shields.io/badge/YouTube_Music-FF0000?style=for-the-badge&logo=youtube-music&logoColor=white" alt="YouTube Music">
+    </a>
   </div>
   <br>
-  &nbsp;&nbsp;&nbsp;&nbsp;<img src="https://ytnow.tierkun.my.id/api/spotify?background_color=0d1117&border_color=ffffff" alt="Currently Playing">
+  &nbsp;&nbsp;&nbsp;&nbsp;<a href="https://playnow.tierkun.my.id/" target="_blank">
+    <img src="https://ytnow.tierkun.my.id/api/spotify?background_color=0d1117&border_color=ffffff" alt="Currently Playing">
+  </a>
 </div>
 
 ## Front Side 
