@@ -2,11 +2,13 @@ const express = require("express");
 const WebSocket = require("ws");
 const fs = require("fs");
 const path = require("path");
+const cronjob = require("node-cron");
 
 const app = express();
 const PORT = 3000;
 
 const sendLog = require("./function/sendLog");
+const sendLogSpotify = require("./function/sendLogSpotify");
 const { getNowPlaying } = require("./function/spotify");
 
 // Middleware to allow JSON parsing
@@ -15,6 +17,11 @@ app.use(express.json());
 // Serve the client HTML page
 app.get("/", (req, res) => {
   res.send("halo");
+});
+
+//cronjob every 1 second
+cronjob.schedule("*/1 * * * * *", async () => {
+  const data = await getNowPlaying();
 });
 
 // Create HTTP server
@@ -68,7 +75,7 @@ wss.on("connection", (ws, req) => {
   // Handle /receive connection
   if (req.url === "/spotify") {
     const intervalId = setInterval(async () => {
-      const data = await getNowPlaying();
+      const data = await sendLogSpotify();
 
       ws.send(JSON.stringify(data));
     }, 1000);
