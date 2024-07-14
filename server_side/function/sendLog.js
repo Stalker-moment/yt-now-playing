@@ -27,7 +27,8 @@ async function sendLog() {
       falseCounter = 0;
     }
 
-    if (falseCounter >= 2) {
+    // Update JSON only if falseCounter reaches 3
+    if (falseCounter >= 3) {
       dataJson.isPlaying = false;
     } else {
       dataJson.isPlaying = isPlaying;
