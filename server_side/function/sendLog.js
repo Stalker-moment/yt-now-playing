@@ -2,6 +2,7 @@ const fs = require("fs");
 
 const filePath = "./data.json";
 let previousDuration = null;
+let falseCounter = 0;
 
 async function sendLog() {
   try {
@@ -20,10 +21,17 @@ async function sendLog() {
     const isPlaying = currentProgress !== previousDuration;
     previousDuration = currentProgress;
 
-    //console.log("isPlaying:", isPlaying);
-    //console.log("progress:", progress);
+    if (!isPlaying) {
+      falseCounter += 1;
+    } else {
+      falseCounter = 0;
+    }
 
-    dataJson.isPlaying = isPlaying;
+    if (falseCounter >= 2) {
+      dataJson.isPlaying = false;
+    } else {
+      dataJson.isPlaying = isPlaying;
+    }
 
     // write the updated data back to the file
     fs.writeFileSync(filePath, JSON.stringify(dataJson, null, 2));
