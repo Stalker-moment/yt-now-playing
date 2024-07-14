@@ -81,13 +81,7 @@ wss.on("connection", (ws, req) => {
       const datanya = JSON.parse(data);
       const dataedit = {
         isPlaying: isPlayingSpotify,
-        title: datanya.title,
-        artist: datanya.artist,
-        album: datanya.album,
-        songThumbnail: datanya.songThumbnail,
-        songUrl: datanya.songUrl,
-        duration: datanya.duration,
-        progress: datanya.progress,
+        ...datanya,
       };
 
       //console.log("Data sent to client:", dataedit);
