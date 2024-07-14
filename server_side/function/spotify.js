@@ -91,6 +91,8 @@ async function getNowPlaying() {
         album: nowPlayingData.item.album.name,
         songThumbnail: nowPlayingData.item.album.images[0].url,
         songUrl: nowPlayingData.item.external_urls.spotify,
+        albumUrl: nowPlayingData.item.album.external_urls.spotify,
+        artistUrl: nowPlayingData.item.artists[0].external_urls.spotify,
         duration: `${durationInMinutes}:${durationInSeconds}`,
         progress: `${progressInMinutes}:${progressInSeconds}`
       };
