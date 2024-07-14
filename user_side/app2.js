@@ -21,7 +21,9 @@ const connectWebSocket = () => {
   };
 
   socket.onclose = (event) => {
-    console.log(chalk.red("WebSocket connection closed. Attempting to reconnect..."));
+    console.log(
+      chalk.red("WebSocket connection closed. Attempting to reconnect...")
+    );
     setTimeout(connectWebSocket, 5000); // Reconnect after 5 seconds
   };
 
@@ -31,8 +33,10 @@ const connectWebSocket = () => {
 };
 
 (async () => {
-  const bravePath = "C:\\Program Files\\BraveSoftware\\Brave-Browser\\Application\\brave.exe";
-  const userDataDir = "C:\\Users\\Acer\\AppData\\Local\\BraveSoftware\\Brave-Browser\\User Data\\";
+  const bravePath =
+    "C:\\Program Files\\BraveSoftware\\Brave-Browser\\Application\\brave.exe";
+  const userDataDir =
+    "C:\\Users\\Acer\\AppData\\Local\\BraveSoftware\\Brave-Browser\\User Data\\";
   const checkInterval = 1300;
 
   connectWebSocket(); // Connect to WebSocket
@@ -56,12 +60,20 @@ const connectWebSocket = () => {
       await page.waitForSelector(".ytmusic-player-bar");
 
       const nowPlaying = await page.evaluate(() => {
-        const title = document.querySelector(".title.ytmusic-player-bar")?.innerText;
-        let artist = document.querySelector(".byline.ytmusic-player-bar")?.innerText;
+        const title = document.querySelector(
+          ".title.ytmusic-player-bar"
+        )?.innerText;
+        let artist = document.querySelector(
+          ".byline.ytmusic-player-bar"
+        )?.innerText;
         const currentUrl = window.location.href;
-        const thumbnail = document.querySelector(".ytmusic-player-bar img")?.src.replace(/default.jpg/, 'maxresdefault.jpg'); // Change to HD thumbnail
-        const durationElement = document.querySelector(".time-info")?.innerText || document.querySelector(".time-info > span:nth-child(2)")?.innerText;
-      
+        const thumbnail = document
+          .querySelector(".ytmusic-player-bar img")
+          ?.src.replace(/default.jpg/, "maxresdefault.jpg"); // Change to HD thumbnail
+        const durationElement =
+          document.querySelector(".time-info")?.innerText ||
+          document.querySelector(".time-info > span:nth-child(2)")?.innerText;
+
         // parse artist
         if (artist) {
           if (artist.includes("•")) {
@@ -69,26 +81,37 @@ const connectWebSocket = () => {
             artist = artist.replace(/\n/g, ""); // delete enter
           }
         }
-      
+
         let duration = null;
         if (durationElement) {
-          const durationMatch = durationElement.match(/\d+:\d+(:\d+)? \/ \d+:\d+(:\d+)?/);
+          const durationMatch = durationElement.match(
+            /\d+:\d+(:\d+)? \/ \d+:\d+(:\d+)?/
+          );
           if (durationMatch) {
             duration = durationMatch[0];
           }
         }
-      
+
         //get duration fresh
         let durationFresh = null;
         if (durationElement) {
-          const durationMatch = durationElement.match(/\d+:\d+(:\d+)? \/ \d+:\d+(:\d+)?/);
+          const durationMatch = durationElement.match(
+            /\d+:\d+(:\d+)? \/ \d+:\d+(:\d+)?/
+          );
           if (durationMatch) {
             durationFresh = durationMatch[0].split(" / ")[1];
           }
         }
-      
-        return { title, artist, duration, durationFresh, currentUrl, thumbnail };
-      });      
+
+        return {
+          title,
+          artist,
+          duration,
+          durationFresh,
+          currentUrl,
+          thumbnail,
+        };
+      });
 
       const arrayUrlNotValid = [
         "https://music.youtube.com/",
@@ -120,34 +143,44 @@ const connectWebSocket = () => {
         "https://music.youtube.com/artist/undefined/merch",
         "https://music.youtube.com/artist/undefined/community",
         "https://music.youtube.com/artist/music_premium/musicfeed",
-        "https://music.youtube.com/playlist?list="
+        "https://music.youtube.com/playlist?list=",
       ];
 
-      if (nowPlaying.currentUrl !== lastValidUrl && !arrayUrlNotValid.includes(nowPlaying.currentUrl)) {
+      if (
+        nowPlaying.currentUrl !== lastValidUrl &&
+        !arrayUrlNotValid.includes(nowPlaying.currentUrl)
+      ) {
         lastValidUrl = nowPlaying.currentUrl;
       }
 
       const isPlaying = nowPlaying.duration !== previousDuration;
       previousDuration = nowPlaying.duration;
 
-      if (isPlaying && lastValidUrl && !lastValidUrl.includes("playlist?list=")) {
+      if (
+        isPlaying &&
+        lastValidUrl &&
+        !lastValidUrl.includes("playlist?list=")
+      ) {
         const details = await ytdl.getBasicInfo(lastValidUrl);
 
         let views = details.videoDetails.viewCount;
         if (views >= 1000000000) {
-            views = `${(views / 1000000000).toFixed(1)}B Views`;
+          views = `${(views / 1000000000).toFixed(1)}B Views`;
         } else if (views >= 1000000) {
-            views = `${(views / 1000000).toFixed(1)}M Views`;
+          views = `${(views / 1000000).toFixed(1)}M Views`;
         } else if (views >= 1000) {
-            views = `${(views / 1000).toFixed(1)}K Views`;
+          views = `${(views / 1000).toFixed(1)}K Views`;
         } else {
-            views = views + " Views";
+          views = views + " Views";
         }
 
         // Get the high-resolution thumbnail URL
-        const thumbnail = details.videoDetails.thumbnails.sort((a, b) => b.width - a.width)[0].url; // Fetch the largest thumbnail
-        
+        const thumbnail = details.videoDetails.thumbnails.sort(
+          (a, b) => b.width - a.width
+        )[0].url; // Fetch the largest thumbnail
+
         const jsonData = {
+          isPlaying,
           title: nowPlaying.title,
           duration: nowPlaying.duration,
           durationFresh: nowPlaying.durationFresh,
@@ -159,7 +192,6 @@ const connectWebSocket = () => {
           views: views,
           channelUrl: details.videoDetails.ownerProfileUrl,
         };
-        
 
         lastValidSongData = jsonData;
 
@@ -176,12 +208,16 @@ const connectWebSocket = () => {
         });
         console.log(chalk.green("---------Now Playing---------"));
         console.log(chalk.yellow(`Title: ${nowPlaying.title}`));
-        console.log(chalk.cyan(`Channel: ${details.videoDetails.ownerChannelName}`));
+        console.log(
+          chalk.cyan(`Channel: ${details.videoDetails.ownerChannelName}`)
+        );
         console.log(chalk.red(`Artist: ${nowPlaying.artist}`));
         console.log(chalk.white(`Views: ${views}`));
         console.log(chalk.magenta(`Duration: ${nowPlaying.duration}`));
         console.log(chalk.white(`URL: ${lastValidUrl}`));
-        console.log(chalk.gray(`Channel URL: ${details.videoDetails.ownerProfileUrl}`));
+        console.log(
+          chalk.gray(`Channel URL: ${details.videoDetails.ownerProfileUrl}`)
+        );
         console.log(chalk.blue(`Thumbnail: ${thumbnail}`));
         console.log(chalk.green("----------------------------"));
       } else if (nowPlaying.currentUrl.includes("playlist?list=")) {
@@ -204,7 +240,9 @@ const connectWebSocket = () => {
           console.log(chalk.white(`Views: ${lastValidSongData.views}`));
           console.log(chalk.magenta(`Duration: ${lastValidSongData.duration}`));
           console.log(chalk.white(`URL: ${lastValidSongData.url}`));
-          console.log(chalk.gray(`Channel URL: ${lastValidSongData.channelUrl}`));
+          console.log(
+            chalk.gray(`Channel URL: ${lastValidSongData.channelUrl}`)
+          );
           console.log(chalk.blue(`Thumbnail: ${lastValidSongData.thumbnail}`));
           console.log(chalk.green("----------------------------"));
         } else {
