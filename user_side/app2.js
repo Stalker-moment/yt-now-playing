@@ -78,7 +78,16 @@ const connectWebSocket = () => {
           }
         }
 
-        return { title, artist, duration, currentUrl, thumbnail };
+        //get duration fresh
+        let durationFresh = null;
+        if (durationElement) {
+          const durationMatch = durationElement.match(/\d+:\d+(:\d+)? \/ \d+:\d+(:\d+)?/);
+          if (durationMatch) {
+            durationFresh = durationMatch[0].split(" / ")[1];
+          }
+        }
+
+        return { title, artist, duration, durationFresh, currentUrl, thumbnail };
       });
 
       const arrayUrlNotValid = [
@@ -124,15 +133,28 @@ const connectWebSocket = () => {
       if (isPlaying && lastValidUrl && !lastValidUrl.includes("playlist?list=")) {
         const details = await ytdl.getBasicInfo(lastValidUrl);
 
+        let views = details.videoDetails.viewCount;
+        if (views >= 1000000000) {
+            views = `${(views / 1000000000).toFixed(1)}B Views`;
+        } else if (views >= 1000000) {
+            views = `${(views / 1000000).toFixed(1)}M Views`;
+        } else if (views >= 1000) {
+            views = `${(views / 1000).toFixed(1)}K Views`;
+        } else {
+            views = views + " Views";
+        }
+
+
         const jsonData = {
           title: nowPlaying.title,
           duration: nowPlaying.duration,
+          durationFresh: nowPlaying.durationFresh,
           url: lastValidUrl,
           thumbnail: nowPlaying.thumbnail,
           artist: nowPlaying.artist,
           channel: details.videoDetails.ownerChannelName,
           description: details.videoDetails.description,
-          views: details.videoDetails.viewCount,
+          views: views,
           channelUrl: details.videoDetails.ownerProfileUrl,
         };
 
@@ -153,7 +175,7 @@ const connectWebSocket = () => {
         console.log(chalk.yellow(`Title: ${nowPlaying.title}`));
         console.log(chalk.cyan(`Channel: ${details.videoDetails.ownerChannelName}`));
         console.log(chalk.red(`Artist: ${nowPlaying.artist}`));
-        console.log(chalk.white(`Views: ${details.videoDetails.viewCount}`));
+        console.log(chalk.white(`Views: ${views}`));
         console.log(chalk.magenta(`Duration: ${nowPlaying.duration}`));
         console.log(chalk.white(`URL: ${lastValidUrl}`));
         console.log(chalk.gray(`Channel URL: ${details.videoDetails.ownerProfileUrl}`));
