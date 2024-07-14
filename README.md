@@ -17,6 +17,12 @@ play over puppeteer for real time playback data
   &nbsp;&nbsp;&nbsp;&nbsp;<img src="https://ytnow.tierkun.my.id/api/spotify?background_color=0d1117&border_color=ffffff" alt="Currently Playing">
 </div>
 
+## Front Side 
+front end by [Azaly](https://github.com/MRAzaly20/)
+
+- For Readme : [Here](https://github.com/MRAzaly20/Flask-YT-Playing)
+- For Real Time Web : [Here](belum)
+
 # Installation
 
 ## Windows
