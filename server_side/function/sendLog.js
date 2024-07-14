@@ -27,16 +27,12 @@ async function sendLog() {
       falseCounter = 0;
     }
 
-    // Update JSON only if falseCounter reaches 3
+    // Only write false to JSON if falseCounter reaches 3
     if (falseCounter >= 3) {
       dataJson.isPlaying = false;
-    } else {
-      dataJson.isPlaying = isPlaying;
+      fs.writeFileSync(filePath, JSON.stringify(dataJson, null, 2));
+      console.log("Data updated in data.json to false");
     }
-
-    // write the updated data back to the file
-    fs.writeFileSync(filePath, JSON.stringify(dataJson, null, 2));
-    console.log("Data updated in data.json");
 
     return JSON.stringify(dataJson, null, 2);
 
