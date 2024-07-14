@@ -7,6 +7,7 @@ const app = express();
 const PORT = 3000;
 
 const sendLog = require("./function/sendLog");
+const { getNowPlaying } = require("./function/spotify");
 
 // Middleware to allow JSON parsing
 app.use(express.json());
@@ -60,6 +61,19 @@ wss.on("connection", (ws, req) => {
 
     ws.on("close", () => {
       console.log("WebSocket client disconnected from /receive");
+      clearInterval(intervalId);
+    });
+  }
+
+  // Handle /receive connection
+  if (req.url === "/spotify") {
+    const intervalId = setInterval(async () => {
+      const data = await getNowPlaying();
+      ws.send(data);
+    }, 1000);
+
+    ws.on("close", () => {
+      console.log("WebSocket client disconnected from /spotify");
       clearInterval(intervalId);
     });
   }
